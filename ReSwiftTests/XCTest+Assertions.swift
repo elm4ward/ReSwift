@@ -28,14 +28,17 @@ public extension XCTestCase {
      method.
      */
     public func expectFatalError(expectedMessage: String? = nil, file: StaticString = #file,
-                                 line: UInt = #line, testCase: () -> Void) {
+                                 line: UInt = #line, testCase: @escaping () -> Void) {
         expectAssertionNoReturnFunction(
             functionName: "fatalError",
             file: file,
             line: line,
-            function: { (caller) -> Void in
+            function: { caller in
 
-                Assertions.fatalErrorClosure = { message, _, _ in caller(message) }
+              Assertions.fatalErrorClosure = { message, _, _ in
+                caller(message)
+                let _ = ""
+              }
 
         }, expectedMessage: expectedMessage, testCase: testCase) { _ in
             Assertions.fatalErrorClosure = Assertions.swiftFatalErrorClosure
@@ -49,10 +52,10 @@ public extension XCTestCase {
         functionName funcName: String,
         file: StaticString,
         line: UInt,
-        function: (caller: (String) -> Void) -> Void,
+        function: (_ caller: @escaping (String) -> Void) -> Void,
         expectedMessage: String? = nil,
-        testCase: () -> Void,
-        cleanUp: () -> ()) {
+        testCase: @escaping () -> Void,
+        cleanUp: @escaping () -> ()) {
 
         let asyncExpectation = futureExpectation(withDescription: funcName + "-Expectation")
         var assertionMessage: String? = nil

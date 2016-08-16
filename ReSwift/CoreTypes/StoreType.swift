@@ -174,9 +174,9 @@ public protocol StoreType {
      ```
 
      */
-    associatedtype ActionCreator = (state: State, store: StoreType) -> Action?
+    associatedtype ActionCreator = (_ state: State, _ store: StoreType) -> Action?
 
     /// AsyncActionCreators allow the developer to wait for the completion of an async action.
     associatedtype AsyncActionCreator =
-        (state: State, store: StoreType, actionCreatorCallback: (ActionCreator) -> Void) -> Void
+        (_ state: State, _ store: StoreType, _ actionCreatorCallback: (ActionCreator) -> Void) -> Void
 }

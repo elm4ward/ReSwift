@@ -16,17 +16,17 @@ import Foundation
  - parameter line:    Calling line
  */
 #if swift(>=3)
-@noreturn internal func raiseFatalError(_ message: @autoclosure () -> String = "",
-                                 file: StaticString = #file, line: UInt = #line) {
-    Assertions.fatalErrorClosure(message(), file, line)
+  internal func raiseFatalError(_ message: String = "",
+                                file: StaticString = #file, line: UInt = #line) -> Never {
+    Assertions.fatalErrorClosure(message, file, line)
     repeat {
         RunLoop.current.run()
     } while (true)
 }
 #else
-@noreturn internal func raiseFatalError(@autoclosure message: () -> String = "",
+@noreturn internal func raiseFatalError(message: String = "",
                                               file: StaticString = #file, line: UInt = #line) {
-    Assertions.fatalErrorClosure(message(), file, line)
+    Assertions.fatalErrorClosure(message, file, line)
     repeat {
         NSRunLoop.currentRunLoop().run()
     } while (true)

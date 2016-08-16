@@ -51,7 +51,7 @@ class DeInitStore<State: StateType>: Store<State> {
     required convenience init(
         reducer: AnyReducer,
         state: State?,
-        deInitAction: () -> Void) {
+        deInitAction: @escaping () -> Void) {
             self.init(reducer: reducer, state: state, middleware: [])
             self.deInitAction = deInitAction
     }
