@@ -177,7 +177,7 @@ open class Store<State: StateType>: StoreType {
 
     #if swift(>=3)
     @discardableResult
-    public func dispatch(_ actionCreatorProvider: ActionCreator) -> Any {
+    public func dispatch(_ actionCreatorProvider: @escaping ActionCreator) -> Any {
         let action = actionCreatorProvider(state, self)
 
         if let action = action {
@@ -187,7 +187,7 @@ open class Store<State: StateType>: StoreType {
         return action
     }
     #else
-    public func dispatch(actionCreatorProvider: ActionCreator) -> Any {
+    public func dispatch(actionCreatorProvider: @escaping ActionCreator) -> Any {
         let action = actionCreatorProvider(state: state, store: self)
 
         if let action = action {
@@ -199,17 +199,17 @@ open class Store<State: StateType>: StoreType {
     #endif
 
     #if swift(>=3)
-    public func dispatch(_ asyncActionCreatorProvider: AsyncActionCreator) {
+    public func dispatch(_ asyncActionCreatorProvider: @escaping AsyncActionCreator) {
         dispatch(asyncActionCreatorProvider, callback: nil)
     }
     #else
-    public func dispatch(asyncActionCreatorProvider: AsyncActionCreator) {
+    public func dispatch(asyncActionCreatorProvider: @escaping AsyncActionCreator) {
         dispatch(asyncActionCreatorProvider, callback: nil)
     }
     #endif
 
     #if swift(>=3)
-    public func dispatch(_ actionCreatorProvider: AsyncActionCreator,
+    public func dispatch(_ actionCreatorProvider: @escaping AsyncActionCreator,
                          callback: DispatchCallback?) {
         actionCreatorProvider(state, self) { actionProvider in
             let action = actionProvider(self.state, self)
